@@ -1,33 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useEffect } from 'react'
+import { initSmoothScroll, destroySmoothScroll } from './lib/scroll'
+import StickyNav from './components/StickyNav'
+import HeroSection from './components/HeroSection'
+import MarqueeSection from './components/MarqueeSection'
+import ServicesSection from './components/ServicesSection'
+import AISection from './components/AISection'
+import ProcessSection from './components/ProcessSection'
+import ClientLogos from './components/ClientLogos'
+import CTASection, { Footer } from './components/CTASection'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  useEffect(() => {
+    initSmoothScroll()
+    return () => destroySmoothScroll()
+  }, [])
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <StickyNav />
+      <main>
+        <HeroSection />
+        <MarqueeSection />
+        <ServicesSection />
+        <AISection />
+        <ProcessSection />
+        <ClientLogos />
+        <CTASection />
+      </main>
+      <Footer />
     </>
   )
 }
