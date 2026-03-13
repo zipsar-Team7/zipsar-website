@@ -2,11 +2,12 @@ import { useEffect, useRef, useState } from 'react'
 import { gsap, ScrollTrigger } from '../lib/scroll'
 
 const NAV = [
-  { label: 'ABOUT', id: 'about' },
-  { label: 'SERVICES', id: 'services' },
-  { label: 'AI', id: 'ai' },
-  { label: 'WORK', id: 'work' },
-  { label: 'CONTACT', id: 'contact' },
+  { label: 'HOME', id: 'home' },
+  { label: 'WHAT WE BUILD', id: 'services' },
+  { label: 'OUR DESIGN PROCESS', id: 'work' },
+  { label: 'AI INTEGRATIONS', id: 'ai' },
+  { label: 'COLLABORATIONS', id: 'clients' },
+  { label: 'CONTACT US', id: 'contact' },
 ]
 
 export default function StickyNav() {

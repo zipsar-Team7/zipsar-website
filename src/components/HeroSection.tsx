@@ -3,14 +3,14 @@ import { gsap, ScrollTrigger, splitWords } from '../lib/scroll'
 
 /* ── Conversation pairs that cycle ── */
 const LEFT_MSGS = [
-  ['More Than Developers.', 'Solution Builders. →'],
-  ['Web · Mobile · AI', 'One team. One roof.'],
-  ['Clean architecture.', 'Built to scale. 🚀'],
+  ['We need a product fast.', 'But built to scale.'],
+  ['Can you integrate', 'smart LLM agents?'],
+  ['Web, Mobile & AI.', 'Too many teams...'],
 ]
 const RIGHT_MSGS = [
-  ['AI-Powered Build.', 'LangChain · RAG · LLMs'],
-  ['Zero manual overhead.', 'Agents that think. ✦'],
-  ['OpenAI + Gemini.', 'Shipped in weeks.'],
+  ['Full-stack ready.', 'Shipped in weeks. 🚀'],
+  ['Already done.', 'Zero overhead. ✦'],
+  ['One team. One roof.', 'That is Zipsar. →'],
 ]
 
 /* SVG coordinate constants */
@@ -34,8 +34,6 @@ export default function HeroSection() {
   /* Conversation refs */
   const leftBubbleRef  = useRef<SVGGElement>(null)
   const rightBubbleRef = useRef<SVGGElement>(null)
-  const leftTypingRef  = useRef<SVGGElement>(null)
-  const rightTypingRef = useRef<SVGGElement>(null)
   const leftT1         = useRef<SVGTextElement>(null)
   const leftT2         = useRef<SVGTextElement>(null)
   const rightT1        = useRef<SVGTextElement>(null)
@@ -44,6 +42,10 @@ export default function HeroSection() {
   /* Left dev head bob ref */
   const leftHeadRef  = useRef<SVGGElement>(null)
   const rightHeadRef = useRef<SVGGElement>(null)
+
+  /* Data packet refs */
+  const pkt1Ref = useRef<SVGCircleElement>(null)
+  const pkt2Ref = useRef<SVGCircleElement>(null)
 
   let msgIdx = 0
 
@@ -72,48 +74,52 @@ export default function HeroSection() {
 
     function buildConversation() {
       /* Set initial hidden state */
-      gsap.set([leftBubbleRef.current, rightBubbleRef.current, leftTypingRef.current, rightTypingRef.current], {
+      gsap.set([leftBubbleRef.current, rightBubbleRef.current], {
         opacity: 0, scale: 0.7, transformOrigin: 'center bottom',
       })
+      gsap.set([pkt1Ref.current, pkt2Ref.current], { opacity: 0 })
 
-      const tl = gsap.timeline({ repeat: -1, onRepeat: nextMsg })
-
-      tl
-        /* ── LEFT TYPING INDICATOR ── */
-        .to(leftTypingRef.current, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(2)' })
-        .to('.left-dot', {
-          y: -5, stagger: { each: 0.18, yoyo: true, repeat: 4 },
-          duration: 0.22, ease: 'power1.inOut',
-        }, '<0.1')
-        .to(leftTypingRef.current, { opacity: 0, scale: 0.7, duration: 0.25, ease: 'power2.in' }, '+=0.2')
-
+      gsap.timeline({ repeat: -1, onRepeat: nextMsg })
         /* ── LEFT BUBBLE IN ── */
         .to(leftHeadRef.current, { y: -4, duration: 0.25, ease: 'power2.out' })
         .to(leftBubbleRef.current, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)' }, '<0.05')
         .to(leftHeadRef.current, { y: 0, duration: 0.25 }, '<0.2')
-        /* Hold left bubble */
-        .to(leftBubbleRef.current, { opacity: 1 }, '+=2.2')
-        /* ── LEFT BUBBLE OUT ── */
-        .to(leftBubbleRef.current, { opacity: 0, scale: 0.75, y: -8, duration: 0.35, ease: 'power2.in' })
-        .set(leftBubbleRef.current, { y: 0 })
+        
+        /* 1s GAP before transmission */
+        .to({}, { duration: 1 })
+        
+        /* ── TRANSMIT 1: Client -> Server ── */
+        .fromTo(pkt1Ref.current,
+          { x: LCX + 30, y: HCY + 40, opacity: 0, scale: 0.5 },
+          { x: 310, y: 126, opacity: 1, scale: 1, duration: 0.5, ease: 'power2.inOut' }
+        )
+        .to(pkt1Ref.current, { opacity: 0, scale: 1.5, duration: 0.2 }, '+=0.1')
+        
+        /* ── TRANSMIT 2: Server -> Agent ── */
+        .fromTo(pkt2Ref.current,
+          { x: 560, y: 126, opacity: 0, scale: 0.5 },
+          { x: RCX - 40, y: HCY + 40, opacity: 1, scale: 1, duration: 0.5, ease: 'power2.inOut' },
+          '-=0.2'
+        )
+        .to(pkt2Ref.current, { opacity: 0, scale: 1.5, duration: 0.2 }, '+=0.1')
 
-        /* ── RIGHT TYPING INDICATOR ── */
-        .to(rightTypingRef.current, { opacity: 1, scale: 1, duration: 0.35, ease: 'back.out(2)' }, '+=0.1')
-        .to('.right-dot', {
-          y: -5, stagger: { each: 0.18, yoyo: true, repeat: 4 },
-          duration: 0.22, ease: 'power1.inOut',
-        }, '<0.1')
-        .to(rightTypingRef.current, { opacity: 0, scale: 0.7, duration: 0.25, ease: 'power2.in' }, '+=0.2')
-
+        /* 1s GAP before Agent responds */
+        .to({}, { duration: 1 })
+        
         /* ── RIGHT BUBBLE IN ── */
         .to(rightHeadRef.current, { y: -4, duration: 0.25, ease: 'power2.out' })
         .to(rightBubbleRef.current, { opacity: 1, scale: 1, duration: 0.45, ease: 'back.out(2)' }, '<0.05')
         .to(rightHeadRef.current, { y: 0, duration: 0.25 }, '<0.2')
-        /* Hold right bubble */
-        .to(rightBubbleRef.current, { opacity: 1 }, '+=2.2')
-        /* ── RIGHT BUBBLE OUT ── */
-        .to(rightBubbleRef.current, { opacity: 0, scale: 0.75, y: -8, duration: 0.35, ease: 'power2.in' })
-        .set(rightBubbleRef.current, { y: 0 })
+        
+        /* Hold Both Bubbles */
+        .to({}, { duration: 2.2 })
+        
+        /* ── BOTH BUBBLES OUT ── */
+        .to([leftBubbleRef.current, rightBubbleRef.current], { opacity: 0, scale: 0.75, y: -8, duration: 0.35, ease: 'power2.in' })
+        .set([leftBubbleRef.current, rightBubbleRef.current], { y: 0 })
+
+        /* 1.5s Cooldown before next loop */
+        .to({}, { duration: 1.5 })
     }
 
     function nextMsg() {
@@ -130,7 +136,7 @@ export default function HeroSection() {
   return (
     <section
       ref={sectionRef}
-      id="about"
+      id="home"
       style={{
         minHeight: '100vh', display: 'flex', flexDirection: 'column',
         alignItems: 'center', justifyContent: 'center', textAlign: 'center',
@@ -139,7 +145,7 @@ export default function HeroSection() {
       }}
     >
       <p style={{ fontFamily: 'var(--font-mono)', fontSize: '0.72rem', letterSpacing: '0.22em', color: 'var(--grey)', marginBottom: '1.5rem', textTransform: 'uppercase' }}>
-        Premium Partner for Startups &nbsp;·&nbsp; SMBs &nbsp;·&nbsp; Enterprises
+        Premium Builder's for Startups &nbsp;·&nbsp; SMBs &nbsp;·&nbsp; Enterprises
       </p>
 
       <h1 ref={headRef} style={{ fontFamily: 'var(--font-display)', fontWeight: 800, lineHeight: 1.0, letterSpacing: '-0.035em', maxWidth: 900, fontSize: 'clamp(2.8rem, 8.5vw, 8.5rem)' }}>
@@ -147,7 +153,7 @@ export default function HeroSection() {
       </h1>
 
       <p ref={subRef} style={{ fontFamily: 'var(--font-mono)', fontSize: 'clamp(0.82rem, 1.4vw, 1.05rem)', color: 'var(--grey)', maxWidth: 560, margin: '2rem auto 2.5rem', lineHeight: 1.9 }}>
-        More than developers — we are solution builders. Web, Mobile & AI under one roof,
+        More than developers — we are dream builders. Web, Mobile & AI under one roof,
         with reliable, scalable, fast execution for teams that refuse to compromise.
       </p>
 
@@ -159,7 +165,7 @@ export default function HeroSection() {
       {/* ───────────────── ILLUSTRATION ───────────────── */}
       <div ref={svgRef} style={{ marginTop: '3.5rem', width: '100%', display: 'flex', justifyContent: 'center' }}>
         <svg
-          viewBox="0 0 900 280"
+          viewBox="0 -20 900 300"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
           style={{ width: '100%', maxWidth: 880, color: 'var(--black)', display: 'block', overflow: 'visible' }}
@@ -183,20 +189,7 @@ export default function HeroSection() {
           <line x1={LCX-14} y1="171" x2={LCX-18} y2="230" />
           <line x1={LCX+14} y1="171" x2={LCX+18} y2="230" />
 
-          {/* ── LEFT TYPING INDICATOR ── */}
-          <g
-            ref={leftTypingRef}
-            style={{ transformBox: 'fill-box', transformOrigin: 'center bottom' } as React.CSSProperties}
-          >
-            <rect x={LCX - 34} y="26" width="68" height="22" rx="8"
-              fill="var(--bg)" stroke="currentColor" strokeWidth="1.8" />
-            <path d={`M ${LCX-8},48 L ${LCX},58 L ${LCX+8},48`}
-              fill="var(--bg)" stroke="currentColor" strokeWidth="1.6" />
-            <line x1={LCX-7} y1="48" x2={LCX+7} y2="48" stroke="var(--bg)" strokeWidth="3" />
-            <circle className="left-dot" cx={LCX-14} cy="37" r="3.5" fill="currentColor" />
-            <circle className="left-dot" cx={LCX}    cy="37" r="3.5" fill="currentColor" fillOpacity="0.7" />
-            <circle className="left-dot" cx={LCX+14} cy="37" r="3.5" fill="currentColor" fillOpacity="0.4" />
-          </g>
+        {/* ── ALIGNMENT/UI FIX ── */}
 
           {/* ── LEFT SPEECH BUBBLE ── */}
           <g
@@ -267,20 +260,7 @@ export default function HeroSection() {
           <line x1={RCX-14} y1="171" x2={RCX-18} y2="230" />
           <line x1={RCX+14} y1="171" x2={RCX+18} y2="230" />
 
-          {/* ── RIGHT TYPING INDICATOR ── */}
-          <g
-            ref={rightTypingRef}
-            style={{ transformBox: 'fill-box', transformOrigin: 'center bottom' } as React.CSSProperties}
-          >
-            <rect x={RCX-34} y="26" width="68" height="22" rx="8"
-              fill="var(--bg)" stroke="currentColor" strokeWidth="1.8" />
-            <path d={`M ${RCX-8},48 L ${RCX},58 L ${RCX+8},48`}
-              fill="var(--bg)" stroke="currentColor" strokeWidth="1.6" />
-            <line x1={RCX-7} y1="48" x2={RCX+7} y2="48" stroke="var(--bg)" strokeWidth="3" />
-            <circle className="right-dot" cx={RCX-14} cy="37" r="3.5" fill="currentColor" />
-            <circle className="right-dot" cx={RCX}    cy="37" r="3.5" fill="currentColor" fillOpacity="0.7" />
-            <circle className="right-dot" cx={RCX+14} cy="37" r="3.5" fill="currentColor" fillOpacity="0.4" />
-          </g>
+        {/* ── ALIGNMENT/UI FIX ── */}
 
           {/* ── RIGHT SPEECH BUBBLE ── */}
           <g
@@ -313,10 +293,14 @@ export default function HeroSection() {
             </text>
           </g>
 
+          {/* ── DATA PARTICLES ── */}
+          <circle ref={pkt1Ref} r="4" fill="var(--black)" />
+          <circle ref={pkt2Ref} r="4" fill="var(--black)" />
+
           {/* Ground captions */}
-          <text x={LCX} y="252" textAnchor="middle" fontFamily="'Space Mono',monospace" fontSize="9" fill="currentColor" fillOpacity="0.28" stroke="none">// frontend</text>
-          <text x="435"  y="252" textAnchor="middle" fontFamily="'Space Mono',monospace" fontSize="9" fill="currentColor" fillOpacity="0.28" stroke="none">// full-stack</text>
-          <text x={RCX} y="252" textAnchor="middle" fontFamily="'Space Mono',monospace" fontSize="9" fill="currentColor" fillOpacity="0.28" stroke="none">// ai integration</text>
+          <text x={LCX} y="252" textAnchor="middle" fontFamily="'Space Mono',monospace" fontSize="9" fill="currentColor" fillOpacity="0.28" stroke="none">// visionary client</text>
+          <text x="435"  y="252" textAnchor="middle" fontFamily="'Space Mono',monospace" fontSize="9" fill="currentColor" fillOpacity="0.28" stroke="none">// seamless execution</text>
+          <text x={RCX} y="252" textAnchor="middle" fontFamily="'Space Mono',monospace" fontSize="9" fill="currentColor" fillOpacity="0.28" stroke="none">// zipsar agent</text>
         </svg>
       </div>
     </section>

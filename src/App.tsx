@@ -23,8 +23,8 @@ function App() {
         <HeroSection />
         <MarqueeSection />
         <ServicesSection />
-        <AISection />
         <ProcessSection />
+        <AISection />
         <ClientLogos />
         <CTASection />
       </main>
