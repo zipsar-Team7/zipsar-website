@@ -73,7 +73,7 @@ export default function StickyNav() {
           zIndex: 1001, transition: 'color 0.3s',
         }}>ZIPSAR /&gt;</button>
 
-        <nav style={{
+        <nav className="desktop-nav" style={{
           display: 'flex', gap: 2,
           background: 'rgba(17,17,17,0.07)', borderRadius: 100, padding: 4,
         }}>
