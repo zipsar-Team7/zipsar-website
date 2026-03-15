@@ -61,9 +61,9 @@ export default function StickyNav() {
         position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '0 2.5rem', height: 'var(--nav-height)',
-        background: scrolled ? 'rgba(240,240,238,0.88)' : 'transparent',
-        backdropFilter: scrolled ? 'blur(18px)' : 'none',
-        borderBottom: scrolled ? '1px solid rgba(17,17,17,0.06)' : 'none',
+        background: open ? 'transparent' : scrolled ? 'rgba(240,240,238,0.88)' : 'transparent',
+        backdropFilter: !open && scrolled ? 'blur(18px)' : 'none',
+        borderBottom: !open && scrolled ? '1px solid rgba(17,17,17,0.06)' : 'none',
         transition: 'background 0.4s, backdrop-filter 0.4s, border-color 0.4s',
       }}>
         <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} style={{
@@ -74,7 +74,7 @@ export default function StickyNav() {
         }}>ZIPSAR /&gt;</button>
 
         <nav className="desktop-nav" style={{
-          display: 'flex', gap: 2,
+          display: open ? 'none' : 'flex', gap: 2,
           background: 'rgba(17,17,17,0.07)', borderRadius: 100, padding: 4,
         }}>
           {NAV.map(({ label, id }, i) => (
