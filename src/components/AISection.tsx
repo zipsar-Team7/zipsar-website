@@ -75,7 +75,7 @@ const features = [
 
 function AIChip({ label, icon, desc, side }: { label: string; icon: string; desc: string; side: 'left' | 'right' }) {
   return (
-    <div className="ai-chip-card" style={{
+    <div className="ai-chip-card" data-side={side} style={{
       display: 'flex',
       alignItems: 'center',
       gap: '0.75rem',
@@ -161,7 +161,7 @@ export default function AISection() {
   }, [])
 
   return (
-    <section ref={sectionRef} id="ai" style={{
+    <section ref={sectionRef} id="ai" className="ai-section" style={{
       background: 'var(--black)', color: 'var(--white)',
       padding: '8rem 2rem', position: 'relative', overflow: 'hidden',
     }}>

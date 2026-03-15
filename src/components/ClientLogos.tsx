@@ -1,19 +1,19 @@
-import senthuron from '../assets/logos/senthuron.jpeg'
-import forzic from '../assets/logos/forzic.jpeg'
-import flippedturtle from '../assets/logos/flippedturtle.jpeg'
-import valar from '../assets/logos/valar.jpeg'
-import geeaar from '../assets/logos/geeaar.jpeg'
-import sociopotents from '../assets/logos/sociopotents.jpeg'
-import startupculture from '../assets/logos/startupculture.jpeg'
+import client1 from '../assets/logos/client-1.jpg'
+import client2 from '../assets/logos/client-2.jpg'
+import client3 from '../assets/logos/client-3.jpg'
+import client4 from '../assets/logos/client-4.jpg'
+import client5 from '../assets/logos/client-5.jpg'
+import client6 from '../assets/logos/client-6.jpg'
+import client7 from '../assets/logos/client-7.jpg'
 
 const logos = [
-  { src: senthuron, name: 'Senthuron Tech' },
-  { src: forzic, name: 'Forzic Digital' },
-  { src: valar, name: 'Valar Digital Commerce' },
-  { src: geeaar, name: 'Geeaar Consumer Solutions' },
-  { src: sociopotents, name: 'Socio Potents' },
-  { src: startupculture, name: 'Startup Culture' },
-  { src: flippedturtle, name: 'Flippedturtle' },
+  { src: client1, name: 'Client 1' },
+  { src: client2, name: 'Client 2' },
+  { src: client3, name: 'Client 3' },
+  { src: client4, name: 'Client 4' },
+  { src: client5, name: 'Client 5' },
+  { src: client6, name: 'Client 6' },
+  { src: client7, name: 'Client 7' },
 ]
 
 // Duplicate for seamless infinite scroll
@@ -21,7 +21,7 @@ const doubled = [...logos, ...logos]
 
 export default function ClientLogos() {
   return (
-    <section style={{
+    <section id="clients" style={{
       padding: '5rem 0',
       background: 'var(--black)',
       overflow: 'hidden',
@@ -120,27 +120,11 @@ function LogoCard({ logo }: { logo: { src: string; name: string } }) {
         height: 120,
         borderRadius: 14,
         overflow: 'hidden',
-        border: '1px solid rgba(255,255,255,0.1)',
-        background: 'rgba(255,255,255,0.05)',
+        border: '1px solid rgba(255,255,255,0.05)',
+        background: '#1A1A1A',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        transition: 'background 0.35s ease, border-color 0.35s ease, transform 0.35s ease, box-shadow 0.35s ease',
-        cursor: 'default',
-      }}
-      onMouseEnter={e => {
-        const el = e.currentTarget as HTMLElement
-        el.style.background = 'rgba(255,255,255,0.09)'
-        el.style.borderColor = 'rgba(255,255,255,0.22)'
-        el.style.transform = 'translateY(-5px)'
-        el.style.boxShadow = '0 16px 48px rgba(0,0,0,0.6)'
-      }}
-      onMouseLeave={e => {
-        const el = e.currentTarget as HTMLElement
-        el.style.background = 'rgba(255,255,255,0.05)'
-        el.style.borderColor = 'rgba(255,255,255,0.1)'
-        el.style.transform = 'translateY(0)'
-        el.style.boxShadow = 'none'
       }}
     >
       <img

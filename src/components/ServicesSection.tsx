@@ -37,9 +37,9 @@ const services = [
   },
   {
     num: '03',
-    title: 'Brand & Identity Systems',
-    desc: "Beyond code — Zipsar helps businesses establish their complete visual presence. Logos, comprehensive brand guidelines, and design systems that communicate authority and trust.",
-    tags: ['Logo Design', 'Brand Systems', 'Figma', 'UI/UX'],
+    title: 'Brand, Identity & Digital Marketing',
+    desc: "Beyond code — Zipsar helps businesses establish their complete visual presence and reach. Logos, comprehensive brand guidelines, SEO, performance marketing, and design systems that communicate authority and trust.",
+    tags: ['Logo Design', 'Brand Systems', 'Figma', 'UI/UX', 'SEO', 'Performance Marketing'],
     icon: (
       <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: 64, height: 64 }}>
         <rect x="10" y="20" width="44" height="44" rx="4" />

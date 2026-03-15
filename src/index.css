@@ -149,3 +149,36 @@ body {
   color: rgba(255,255,255,0.7); letter-spacing: 0.06em;
   animation: float 4s ease-in-out infinite;
 }
+
+/* Nav: hide pill on mobile, show only MENU button */
+@media (max-width: 768px) {
+  .desktop-nav { display: none !important; }
+
+  /* AI section: tighter padding on mobile */
+  .ai-section {
+    padding: 4rem 1.25rem !important;
+  }
+
+  /* AI diagram: stack vertically on mobile */
+  .ai-diagram {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
+
+  /* Robot: shrink slightly so it fits */
+  .ai-robot-wrap svg {
+    width: 160px !important;
+  }
+
+  /* Connector dots don't make sense when stacked */
+  .ai-chip-card > div:first-child {
+    display: none !important;
+  }
+
+  /* Right-side chips: switch back to left alignment when stacked */
+  .ai-chip-card[data-side="right"] {
+    flex-direction: row !important;
+    text-align: left !important;
+  }
+}
