@@ -1,12 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { gsap, splitWords } from '../lib/scroll'
 
-const usps = [
-  { icon: '⚡', title: 'End-to-End Expertise', desc: 'Web, Mobile & AI under one roof — no handoffs, no gaps.' },
-  { icon: '📈', title: 'Service-First Stability', desc: 'Proven revenue model means we\'re here for the long haul.' },
-  { icon: '🛡️', title: 'Proven Track Record', desc: 'Versatile client portfolio across industries and team sizes.' },
-  { icon: '🔭', title: 'Product Vision', desc: 'SaaS tools & proprietary IP on the roadmap — we think ahead.' },
-]
 
 export default function CTASection() {
   const sectionRef = useRef<HTMLElement>(null)
