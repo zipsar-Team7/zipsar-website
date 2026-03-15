@@ -16,20 +16,33 @@ export default function CustomCursor() {
     const ring = ringRef.current
     if (!dot || !ring) return
 
-    // Hide on touch-primary devices
-    if (window.matchMedia('(hover: none)').matches) return
-
     let mouse  = { x: -200, y: -200 }
     let ringXY = { x: -200, y: -200 }
     let hovered = false
     let raf: number
 
-    const onMove = (e: MouseEvent) => {
-      mouse.x = e.clientX
-      mouse.y = e.clientY
+    // Unified move handler
+    const updatePosition = (x: number, y: number) => {
+      mouse.x = x
+      mouse.y = y
     }
 
-    const onEnter = (e: MouseEvent) => {
+    const onMouseMove = (e: MouseEvent) => {
+      updatePosition(e.clientX, e.clientY)
+    }
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        updatePosition(e.touches[0].clientX, e.touches[0].clientY)
+      }
+    }
+
+    const onTouchEnd = () => {
+      // Move off-screen when touch ends
+      updatePosition(-200, -200)
+    }
+
+    const onEnter = (e: MouseEvent | TouchEvent) => {
       const t = e.target as HTMLElement
       if (
         t.matches('a, button, [role="button"], label, input, textarea, select, [data-cursor-hover]') ||
@@ -40,7 +53,7 @@ export default function CustomCursor() {
       }
     }
 
-    const onLeave = (e: MouseEvent) => {
+    const onLeave = (e: MouseEvent | TouchEvent) => {
       const t = e.target as HTMLElement
       if (!t.matches('a, button, [role="button"]') && !t.closest('a, button, [role="button"]')) {
         hovered = false
@@ -64,16 +77,24 @@ export default function CustomCursor() {
     // Hide native cursor globally
     document.documentElement.classList.add('custom-cursor-active')
 
-    window.addEventListener('mousemove', onMove)
-    document.addEventListener('mouseover', onEnter)
-    document.addEventListener('mouseout',  onLeave)
+    window.addEventListener('mousemove', onMouseMove)
+    window.addEventListener('touchstart', onTouchMove)
+    window.addEventListener('touchmove', onTouchMove)
+    window.addEventListener('touchend', onTouchEnd)
+    
+    document.addEventListener('mouseover', onEnter as any)
+    document.addEventListener('mouseout',  onLeave as any)
     raf = requestAnimationFrame(frame)
 
     return () => {
       cancelAnimationFrame(raf)
-      window.removeEventListener('mousemove', onMove)
-      document.removeEventListener('mouseover', onEnter)
-      document.removeEventListener('mouseout',  onLeave)
+      window.removeEventListener('mousemove', onMouseMove)
+      window.removeEventListener('touchstart', onTouchMove)
+      window.removeEventListener('touchmove', onTouchMove)
+      window.removeEventListener('touchend', onTouchEnd)
+      
+      document.removeEventListener('mouseover', onEnter as any)
+      document.removeEventListener('mouseout',  onLeave as any)
       document.documentElement.classList.remove('custom-cursor-active')
     }
   }, [])
